@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ios_collect/logger"
+	"logger"
 	"fmt"
 	"time"
 )

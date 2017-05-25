@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 	"regexp"
-	"ios_collect/utils"
 	"fmt"
 )
 
@@ -71,7 +70,7 @@ func (logger *_Logger) SetFormat(format FormatType) error {
 			return NewError("Not valid predefined param. {message}, {level}, {datetime} is valid.")
 		}
 	}
-	if utils.Contains(params, MessageDF) {
+	if Contains(params, MessageDF) {
 		return NewError("No message part found!")
 	}
 
