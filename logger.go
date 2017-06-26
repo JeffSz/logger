@@ -155,9 +155,7 @@ var(
 	Logger = &_Logger{dateFormat: "2006-01-02 15:04:05"}
 )
 
-func BasicConfig(logFile string, level LevelType, format FormatType, datetimeFormat FormatType){
-	_LocalMu.Lock()
-	defer _LocalMu.Unlock()
+func basicConfig(logFile string, level LevelType, format FormatType, datetimeFormat FormatType){
 	handler, err := NewBasicHandler(level, logFile)
 	if err != nil{
 		panic(err)
@@ -167,12 +165,18 @@ func BasicConfig(logFile string, level LevelType, format FormatType, datetimeFor
 	Logger.AddHandler(handler)
 }
 
+func BasicConfig(logFile string, level LevelType, format FormatType, datetimeFormat FormatType){
+	_LocalMu.Lock()
+	defer _LocalMu.Unlock()
+	basicConfig(logFile, level, format, datetimeFormat)
+}
+
 func initBasic(){
 	if len(Logger.handlers) == 0{
 		_LocalMu.Lock()
 		defer _LocalMu.Unlock()
 		if len(Logger.handlers) == 0{
-			BasicConfig("log.log", INFO, "[{datetime}] [{level}] {message}", "2006-01-02 15:04:05")
+			basicConfig("log.log", INFO, "[{datetime}] [{level}] {message}", "2006-01-02 15:04:05")
 		}
 	}
 }
