@@ -2,26 +2,30 @@ package main
 
 import (
 	"logger"
+	"logger/handlers"
 	"fmt"
 	"time"
 )
 
 func main(){
 	//logger.BasicConfig("test.log", logger.INFO, "[{datetime}] {message}", "2006-01-02")
-	handler, _ := logger.NewTimeRotateHandler(logger.Minute, logger.INFO, "test1.log")
+	handler, _ := handlers.NewTimeRotateHandler(handlers.Minute, logger.INFO, "/Users/Jeff/go/src/logger/test1.log", 3)
 	logger.Logger.AddHandler(handler)
 	logger.Logger.SetFormat("[{level}] {message}")
 
-	fmt.Println("Debug")
-	logger.Debug("DDDDDDDDDD")
-	fmt.Println("Info")
-	logger.Info("IIIIIIIIII")
-	fmt.Println("Error")
-	logger.Error("EEEEEEEEEE")
-	fmt.Println("Fatal")
-	logger.Fatal("FFFFFFFFFF")
-	fmt.Println("Warn")
-	logger.Warn("WWWWWWWWWW")
-	time.Sleep(time.Second)
+	logger.Debug("This is debug test")
+	logger.Info("This is info test")
+	logger.Error("This is error test")
+	logger.Fatal("This is fatal test")
+	logger.Error("This is error test")
+	time.Sleep(time.Minute * 2)
+	logger.Error("This is rotate test")
+	time.Sleep(time.Minute * 2)
+	logger.Error("This is rotate test")
+	time.Sleep(time.Minute * 2)
+	logger.Error("This is backup test")
+	time.Sleep(time.Minute * 2)
+	logger.Error("This is backup test")
 	fmt.Println("Done!")
+
 }

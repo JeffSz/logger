@@ -10,18 +10,6 @@ import (
 
 type WriteFunc func(string, LevelType) error
 
-type LevelType int32
-
-const (
-	ALL   LevelType = iota
-	DEBUG
-	INFO
-	WARN
-	ERROR
-	FATAL
-	OFF
-)
-
 // Predefined message format
 type FormatType string
 
@@ -35,10 +23,6 @@ var (
 	_LOGGERS = make(map[string]*_Logger)
 	_Df_REG  = regexp.MustCompile("\\{\\w\\}")
 )
-
-type Handler interface {
-	log(string, LevelType) error
-}
 
 type _Logger struct {
 	handlers   []Handler
@@ -106,7 +90,7 @@ func (logger *_Logger) SetFormat(format FormatType) error {
 		}
 
 		for _, handler := range logger.handlers {
-			handler.log(msg, levelType)
+			handler.Log(msg, levelType)
 		}
 		return nil
 	}
@@ -118,7 +102,7 @@ func (logger *_Logger) AddHandler(handler Handler)  {
 	logger.handlers = append(logger.handlers, handler)
 }
 
-func (logger *_Logger) CleanHandler(handler Handler) {
+func (logger *_Logger) CleanHandler() {
 	logger.handlers = make([]Handler, 0)
 }
 
