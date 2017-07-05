@@ -1,4 +1,4 @@
-package handlers
+package logger
 
 import (
 	"os"
@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"fmt"
 	"sort"
-	"logger"
 )
 
 type When string
@@ -20,17 +19,10 @@ const (
 	Day   = "D"
 	Month = "M"
 	Year  = "Y"
-	Mon   = "W1"
-	Tue   = "W2"
-	Wed   = "W3"
-	Thu   = "W4"
-	Fri   = "W5"
-	Sat   = "W6"
-	Sun   = "W7"
 )
 
 type TimeRotateHandler struct {
-	level         logger.LevelType
+	level         LevelType
 	fileName      string
 	file          *os.File
 	mu            *sync.RWMutex
@@ -52,13 +44,11 @@ func fileSuffixFormat(when When) string {
 		timeFormat = "2006-01"
 	case Year:
 		timeFormat = "2006"
-	case Mon, Tue, Wed, Thu, Fri, Sat, Sun:
-		timeFormat = "2006-01-02"
 	}
 	return timeFormat
 }
 
-func NewTimeRotateHandler(when When, level logger.LevelType, filePath string, backup int) (*TimeRotateHandler, error) {
+func NewTimeRotateHandler(when When, level LevelType, filePath string, backup int) (*TimeRotateHandler, error) {
 	var fd *os.File
 	suffixFormat := fileSuffixFormat(when)
 	if state, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -144,7 +134,7 @@ func (handler *TimeRotateHandler) Rotate() error {
 	return nil
 }
 
-func (handler *TimeRotateHandler) Log(message string, level logger.LevelType) error {
+func (handler *TimeRotateHandler) Log(message string, level LevelType) error {
 	if level < handler.level {
 		return nil
 	}
