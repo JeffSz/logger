@@ -139,6 +139,17 @@ func (handler *TimeRotateHandler) Log(message string, level LevelType) error {
 		return nil
 	}
 	handler.Rotate()
-	handler.file.WriteString(message + "\r\n")
-	return nil
+	message += "\r\n"
+	bytes := []byte(message)
+	for {
+		count, err := handler.file.Write(bytes)
+		if err != nil{
+			return err
+		}else if count < len(bytes){
+			handler.file.Sync()
+			bytes = bytes[count:]
+		}else{
+			return nil
+		}
+	}
 }
