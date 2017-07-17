@@ -2,14 +2,14 @@ package main
 
 import (
 	"logger"
-	"logger/handlers"
 	"fmt"
 	"time"
+	"os"
 )
 
 func main(){
 	//logger.BasicConfig("test.log", logger.INFO, "[{datetime}] {message}", "2006-01-02")
-	handler, _ := handlers.NewTimeRotateHandler(handlers.Minute, logger.INFO, "/Users/Jeff/go/src/logger/test1.log", 3)
+	handler, _ := logger.NewHTimeRotateHandler(logger.Minute, logger.INFO, "/Users/Jeff/go/src/logger/test1.log", 3)
 	logger.Logger.AddHandler(handler)
 	logger.Logger.SetFormat("[{level}] {message}")
 
@@ -27,5 +27,5 @@ func main(){
 	time.Sleep(time.Minute * 2)
 	logger.Error("This is backup test")
 	fmt.Println("Done!")
-
+	os.Exit(0)
 }

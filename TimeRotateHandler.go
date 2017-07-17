@@ -7,7 +7,6 @@ import (
 	"path"
 	"strings"
 	"io/ioutil"
-	"fmt"
 	"sort"
 )
 
@@ -103,11 +102,8 @@ func (handler *TimeRotateHandler) keepBackUp(){
 		}
 	}
 	if len(fileNames) > handler.backup{
-		fmt.Println(fileNames)
-		fmt.Println(handler.backup)
 		sort.Strings(fileNames)
 		for _, f := range fileNames[: len(fileNames) - handler.backup]{
-			fmt.Println(dirPath + string(os.PathSeparator) + f)
 			os.Remove(dirPath + string(os.PathSeparator) + f)
 		}
 	}
