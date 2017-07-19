@@ -112,27 +112,27 @@ func (logger *LogType) SetDatetimeFormat(format FormatType) {
 
 func (logger *LogType) Info(v ...interface{}) {
 	msg := fmt.Sprint(v...)
-	logger.format(msg[1: len(msg)-1], INFO)
+	logger.format(msg, INFO)
 }
 
 func (logger *LogType) Debug(v ...interface{}) {
 	msg := fmt.Sprint(v...)
-	logger.format(msg[1: len(msg)-1], DEBUG)
+	logger.format(msg, DEBUG)
 }
 
 func (logger *LogType) Warn(v ...interface{}) {
 	msg := fmt.Sprint(v...)
-	logger.format(msg[1: len(msg)-1], WARN)
+	logger.format(msg, WARN)
 }
 
 func (logger *LogType) Error(v ...interface{}) {
 	msg := fmt.Sprint(v...)
-	logger.format(msg[1: len(msg)-1], ERROR)
+	logger.format(msg, ERROR)
 }
 
 func (logger *LogType) Fatal(v ...interface{}) {
 	msg := fmt.Sprint(v...)
-	logger.format(msg[1: len(msg)-1], FATAL)
+	logger.format(msg, FATAL)
 }
 
 var(
@@ -167,25 +167,25 @@ func initBasic(){
 
 func Info(v ...interface{}){
 	initBasic()
-	Logger.Info(v)
+	Logger.Info(v...)
 }
 
 func Debug(v ...interface{}) {
 	initBasic()
-	Logger.Debug(v)
+	Logger.Debug(v...)
 }
 
 func Warn(v ...interface{}) {
 	initBasic()
-	Logger.Warn(v)
+	Logger.Warn(v...)
 }
 
 func Error(v ...interface{}) {
 	initBasic()
-	Logger.Error(v)
+	Logger.Error(v...)
 }
 
 func Fatal(v ...interface{}) {
 	initBasic()
-	Logger.Fatal(v)
+	Logger.Fatal(v...)
 }
