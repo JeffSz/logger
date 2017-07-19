@@ -20,11 +20,11 @@ const (
 )
 
 var (
-	_LOGGERS = make(map[string]*_Logger)
+	_LOGGERS = make(map[string]*LogType)
 	_Df_REG  = regexp.MustCompile("\\{\\w\\}")
 )
 
-type _Logger struct {
+type LogType struct {
 	handlers   []Handler
 	format     WriteFunc
 	dateFormat FormatType
@@ -34,19 +34,19 @@ var (
 	_LocalMu = new(sync.RWMutex)
 )
 
-func NewLogger(logger string) *_Logger {
+func NewLogger(logger string) *LogType {
 
 	if _, ok := _LOGGERS[logger]; !ok {
 		_LocalMu.Lock()
 		defer _LocalMu.Unlock()
 		if _, ok = _LOGGERS[logger]; !ok {
-			_LOGGERS[logger] = &_Logger{dateFormat: "2006-01-02 15:04:05"}
+			_LOGGERS[logger] = &LogType{dateFormat: "2006-01-02 15:04:05"}
 		}
 	}
 	return _LOGGERS[logger]
 }
 
-func (logger *_Logger) SetFormat(format FormatType) error {
+func (logger *LogType) SetFormat(format FormatType) error {
 
 	params := _Df_REG.FindAllString(string(format), 0)
 	for _, value := range params {
@@ -98,45 +98,45 @@ func (logger *_Logger) SetFormat(format FormatType) error {
 	return nil
 }
 
-func (logger *_Logger) AddHandler(handler Handler)  {
+func (logger *LogType) AddHandler(handler Handler)  {
 	logger.handlers = append(logger.handlers, handler)
 }
 
-func (logger *_Logger) CleanHandler() {
+func (logger *LogType) CleanHandler() {
 	logger.handlers = make([]Handler, 0)
 }
 
-func (logger *_Logger) SetDatetimeFormat(format FormatType) {
+func (logger *LogType) SetDatetimeFormat(format FormatType) {
 	logger.dateFormat = format
 }
 
-func (logger *_Logger) Info(v ...interface{}) {
+func (logger *LogType) Info(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	logger.format(msg[1: len(msg)-1], INFO)
 }
 
-func (logger *_Logger) Debug(v ...interface{}) {
+func (logger *LogType) Debug(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	logger.format(msg[1: len(msg)-1], DEBUG)
 }
 
-func (logger *_Logger) Warn(v ...interface{}) {
+func (logger *LogType) Warn(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	logger.format(msg[1: len(msg)-1], WARN)
 }
 
-func (logger *_Logger) Error(v ...interface{}) {
+func (logger *LogType) Error(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	logger.format(msg[1: len(msg)-1], ERROR)
 }
 
-func (logger *_Logger) Fatal(v ...interface{}) {
+func (logger *LogType) Fatal(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	logger.format(msg[1: len(msg)-1], FATAL)
 }
 
 var(
-	Logger = &_Logger{dateFormat: "2006-01-02 15:04:05"}
+	Logger = &LogType{dateFormat: "2006-01-02 15:04:05"}
 )
 
 func basicConfig(logFile string, level LevelType, format FormatType, datetimeFormat FormatType){
